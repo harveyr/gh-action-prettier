@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import * as kit from 'github-actions-kit'
+import * as kit from '@harveyr/github-actions-kit'
 import * as prettier from './prettier'
 
 async function postCheckRun(flaggedFiles: string[]): Promise<void> {

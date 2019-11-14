@@ -1,4 +1,4 @@
-import { ExecOptions, execAndCapture } from 'github-actions-kit'
+import { ExecOptions, execAndCapture } from '@harveyr/github-actions-kit'
 
 const PRETTIER_PATH = 'node_modules/.bin/prettier'
 
