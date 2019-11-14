@@ -36,25 +36,23 @@ async function run(): Promise<void> {
       return p.length > 0
     })
 
-  if (!patterns.length) {
-    core.debug('No patterns passed. Not running Prettier.')
-    return
-  }
-
   // Cause the version to be printed to the logs. We want to make sure we're
   // using the version in the repo under test, not the one from this repo.
   await prettier.getVersion({ cwd })
 
-  const output = await prettier.run(patterns, { cwd })
-  const flaggedFiles: string[] = output
-    .trim()
-    .split('\n')
-    .map(f => {
-      return f.trim()
-    })
-    .filter(f => {
-      return f.length > 0
-    })
+  let flaggedFiles: string[] = []
+  if (patterns.length) {
+    const output = await prettier.run(patterns, { cwd })
+    flaggedFiles = output
+      .trim()
+      .split('\n')
+      .map(f => {
+        return f.trim()
+      })
+      .filter(f => {
+        return f.length > 0
+      })
+  }
 
   await postCheckRun(flaggedFiles)
 }
