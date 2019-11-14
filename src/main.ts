@@ -2,30 +2,25 @@ import * as core from '@actions/core'
 import * as prettier from './prettier'
 
 // TODO: Use a TS import once this is fixed: https://github.com/actions/toolkit/issues/199
-// import * as github from '@actions/github'
+import * as github from '@actions/github'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const github = require('@actions/github')
+// const github = require('@actions/github')
 
 const { GITHUB_REPOSITORY, GITHUB_SHA, GITHUB_WORKSPACE } = process.env
 
-// It appears the setup-node step adds a "problem matcher" that will catch lints
-// and create annotations automatically!
-const POST_ANNOTATIONS=false
-
-function getAnnotationLevel(
-  severity: string,
-): 'notice' | 'warning' | 'failure' {
-  if (severity === 'error') {
-    return 'failure'
-  }
-  // not sure what the actual string is yet
-  if (severity.indexOf('warn') === 0) {
-    return 'warning'
-  }
-  return 'notice'
+interface Annotation {
+  annotation_level: 'notice' | 'warning' | 'failure'
+  end_column?: number
+  end_line: number
+  message: string
+  path: string
+  raw_details?: string
+  start_column?: number
+  start_line: number
+  title?: string
 }
 
-async function postCheckRun(success: boolean, text: string): Promise<void> {
+async function postCheckRun(flaggedFiles: string[]): Promise<void> {
   if (!GITHUB_WORKSPACE) {
     return core.setFailed(
       'GITHUB_WORKSPACE not set. This should happen automatically.',
@@ -47,9 +42,23 @@ async function postCheckRun(success: boolean, text: string): Promise<void> {
   const [owner, repo] = GITHUB_REPOSITORY.split('/')
   core.debug(`Found Github owner ${owner}, repo ${repo}`)
 
+  const annotations: Annotation[] = []
+  for (const path of flaggedFiles) {
+    annotations.push({
+      path,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      start_line: 1,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      end_line: 1,
+      // eslint-disable-next-line @typescript-eslint/camelcase
+      annotation_level: 'failure',
+      message: 'Prettier would reformat this file',
+    })
+  }
+
   await client.checks.create({
     name: 'Prettier',
-    conclusion: success ? 'success' : 'failure',
+    conclusion: flaggedFiles.length === 0 ? 'success' : 'failure',
     // eslint-disable-next-line @typescript-eslint/camelcase
     head_sha: GITHUB_SHA,
     owner,
@@ -57,7 +66,8 @@ async function postCheckRun(success: boolean, text: string): Promise<void> {
     output: {
       title: 'Prettier',
       summary: `Output`,
-      text,
+      text: flaggedFiles.join(' '),
+      annotations,
     },
   })
 }
@@ -80,11 +90,19 @@ async function run(): Promise<void> {
   const output = await prettier.run(patterns, {
     cwd: core.getInput('working-directory'),
   })
+  const flaggedFiles: string[] = output
+    .trim()
+    .split('\n')
+    .map(f => {
+      return f.trim()
+    })
+    .filter(f => {
+      return f.length > 0
+    })
 
-  const success = output.trim().length === 0
-  postCheckRun(success, output)
-  if (output.length) {
-    core.setFailed('Prettier would change files')
+  postCheckRun(flaggedFiles)
+  if (flaggedFiles.length) {
+    core.setFailed(`Prettier would change ${flaggedFiles} files`)
   }
 }
 
