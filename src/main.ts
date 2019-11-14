@@ -101,13 +101,8 @@ async function run(): Promise<void> {
     })
 
   await postCheckRun(flaggedFiles)
-
-  if (flaggedFiles.length) {
-    core.setFailed(`Prettier would change ${flaggedFiles.length} files`   )
-  }
 }
 
 run().catch(err => {
-  console.log('FIXME: caught error', err)
   core.setFailed(`${err}`)
 })
