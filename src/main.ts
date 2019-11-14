@@ -65,7 +65,7 @@ async function postCheckRun(flaggedFiles: string[]): Promise<void> {
     repo,
     output: {
       title: 'Prettier',
-      summary: flaggedFiles.length    ? 'Flagged files' : 'No flagged files',
+      summary: flaggedFiles.length ? 'Flagged files' : 'No flagged files',
       text: flaggedFiles.join('\n'),
       annotations,
     },
@@ -108,5 +108,6 @@ async function run(): Promise<void> {
 }
 
 run().catch(err => {
+  console.log('FIXME: caught error', err)
   core.setFailed(`${err}`)
 })
