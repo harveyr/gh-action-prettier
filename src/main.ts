@@ -2,9 +2,9 @@ import * as core from '@actions/core'
 import * as prettier from './prettier'
 
 // TODO: Use a TS import once this is fixed: https://github.com/actions/toolkit/issues/199
-import * as github from '@actions/github'
+// import * as github from '@actions/github'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// const github = require('@actions/github')
+const github = require('@actions/github')
 
 const { GITHUB_REPOSITORY, GITHUB_SHA, GITHUB_WORKSPACE } = process.env
 
@@ -65,8 +65,8 @@ async function postCheckRun(flaggedFiles: string[]): Promise<void> {
     repo,
     output: {
       title: 'Prettier',
-      summary: `Output`,
-      text: flaggedFiles.join(' '),
+      summary: flaggedFiles.length ? 'Flagged files' : 'No flagged files',
+      text: flaggedFiles.join('\n'),
       annotations,
     },
   })
@@ -100,13 +100,13 @@ async function run(): Promise<void> {
       return f.length > 0
     })
 
-  postCheckRun(flaggedFiles)
+  await postCheckRun(flaggedFiles)
+
   if (flaggedFiles.length) {
-    core.setFailed(`Prettier would change ${flaggedFiles} files`)
+    core.setFailed(`Prettier would change ${flaggedFiles.length} files`)
   }
 }
 
 run().catch(err => {
-  core.error(err)
   core.setFailed(`${err}`)
 })
