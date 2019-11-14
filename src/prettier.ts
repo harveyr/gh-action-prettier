@@ -9,7 +9,7 @@ export async function getVersion(opt: ExecOptions = {}): Promise<string> {
     [PRETTIER_PATH, '--version'],
     opt,
   )
-  return    stdout
+  return stdout
 }
 
 export async function run(
