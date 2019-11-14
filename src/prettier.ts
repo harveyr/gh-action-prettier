@@ -1,12 +1,14 @@
-import * as core from '@actions/core'
-import { ExecOptions, captureOutput } from './exec'
+import { ExecOptions, execAndCapture } from '@harveyr/github-actions-kit'
 
 const PRETTIER_PATH = 'node_modules/.bin/prettier'
 
-export async function getVersion(): Promise<string> {
-  const { stdout } = await captureOutput('node', [PRETTIER_PATH, '--version'], {
-    failOnStdErr: true,
-  })
+export async function getVersion(opt: ExecOptions = {}): Promise<string> {
+  opt.failOnStdErr = true
+  const { stdout } = await execAndCapture(
+    'node',
+    [PRETTIER_PATH, '--version'],
+    opt,
+  )
   return stdout
 }
 
@@ -16,6 +18,6 @@ export async function run(
 ): Promise<string> {
   opt.failOnStdErr = false
   const args = [PRETTIER_PATH, '--list-different'].concat(patterns)
-  const { stdout, stderr } = await captureOutput('node', args, opt)
+  const { stdout, stderr } = await execAndCapture('node', args, opt)
   return stdout + stderr
 }

@@ -1,5 +1,5 @@
 {
-  "name": "gh-action-eslint",
+  "name": "gh-action-prettier",
   "version": "0.0.0",
   "private": true,
   "description": "Github action",
@@ -12,6 +12,7 @@
     "@actions/core": "^1.0.0",
     "@actions/exec": "^1.0.1",
     "@actions/github": "^1.1.0",
+    "@harveyr/github-actions-kit": "^1.0.0",
     "@octokit/graphql": "^4.3.1"
   },
   "devDependencies": {

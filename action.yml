@@ -1,17 +1,14 @@
-name: Changed files by extension
-description: Outputs files changed since master branch by extension
+name: Prettier Github Action
+description: Runs prettier against provided file patterns and reports failures if prettier would reformat files
 author: Harvey Rogers
 runs:
   using: node12
   main: lib/main.js
 inputs:
-  github-token:
-    description: Github auth token
-    required: true
   patterns:
-    description: Space-separated patterns to pass to eslint
+    description: File patterns to pass to prettier
     required: false
     default: '.'
   working-directory:
-    description: Run eslint from this dir
+    description: Run from this subdirectory
     required: false
