@@ -12,9 +12,10 @@ fi
 
 set -x
 
+npm ci
 npm run build
 git add -f lib
-git diff --quiet && git diff --staged --quiet || git commit -am "build"
+git diff --quiet && git diff --staged --quiet || git commit -m "build"
 
 npm ci --only=production
 git add -f node_modules
