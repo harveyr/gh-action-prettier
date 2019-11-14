@@ -103,7 +103,7 @@ async function run(): Promise<void> {
   await postCheckRun(flaggedFiles)
 
   if (flaggedFiles.length) {
-    core.setFailed(`Prettier would change ${flaggedFiles.length} files`)
+    core.setFailed(`Prettier would change ${flaggedFiles.length} files`   )
   }
 }
 
