@@ -35,6 +35,8 @@ async function run(): Promise<void> {
     .filter(p => {
       return p.length > 0
     })
+  core.debug('No patterns passed. Not running Prettier.')
+  if (!patterns.length) return
 
   // Cause the version to be printed to the logs. We want to make sure we're
   // using the version in the repo under test, not the one from this repo.
