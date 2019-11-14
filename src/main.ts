@@ -2,9 +2,9 @@ import * as core from '@actions/core'
 import * as prettier from './prettier'
 
 // TODO: Use a TS import once this is fixed: https://github.com/actions/toolkit/issues/199
-import * as github from '@actions/github'
+// import * as github from '@actions/github'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-// const github = require('@actions/github')
+const github = require('@actions/github')
 
 const { GITHUB_REPOSITORY, GITHUB_SHA, GITHUB_WORKSPACE } = process.env
 
@@ -83,7 +83,7 @@ async function run(): Promise<void> {
 
   const success = output.trim().length === 0
   postCheckRun(success, output)
-  if (!success) {
+  if (output.length) {
     core.setFailed('Prettier would change files')
   }
 }
