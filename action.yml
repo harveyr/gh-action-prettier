@@ -1,9 +1,6 @@
 name: Prettier Github Action
 description: Runs prettier against provided file patterns and reports failures if prettier would reformat files
 author: Harvey Rogers
-runs:
-  using: node12
-  main: lib/main.js
 inputs:
   patterns:
     description: File patterns to pass to prettier
@@ -12,3 +9,6 @@ inputs:
   working-directory:
     description: Run from this subdirectory
     required: false
+runs:
+  using: node12
+  main: dist/index.js

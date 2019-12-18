@@ -1,7 +1,8 @@
 !.npmrc
 
-lib
-node_modules
+lib/
+dist/
+node_modules/
 
 __tests__/runner/*
 
