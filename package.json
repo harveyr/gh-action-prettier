@@ -6,14 +6,14 @@
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
+    "dist": "ncc build src/main.ts -o dist",
     "test": "jest"
   },
   "dependencies": {
-    "@actions/core": "^1.0.0",
+    "@actions/core": "^1.2.0",
     "@actions/exec": "^1.0.1",
-    "@actions/github": "^1.1.0",
-    "@harveyr/github-actions-kit": "0.0.3",
-    "@octokit/graphql": "^4.3.1"
+    "@actions/github": "^2.0.0",
+    "@harveyr/github-actions-kit": "0.0.3"
   },
   "devDependencies": {
     "@types/eslint": "^6.1.3",

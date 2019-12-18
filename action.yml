@@ -2,11 +2,16 @@ name: Prettier Github Action
 description: Runs prettier against provided file patterns and reports failures if prettier would reformat files
 author: Harvey Rogers
 inputs:
+  github_token:
+    description: Github token (required to post annotations)
+  prettier_path:
+    description: Path to prettier executable
+    default: 'node_modules/.bin/prettier'
   patterns:
     description: File patterns to pass to prettier
     required: false
     default: '.'
-  working-directory:
+  working_directory:
     description: Run from this subdirectory
     required: false
 runs:
