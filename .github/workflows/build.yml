@@ -20,3 +20,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           patterns: src/**.ts .github/**/*.yml .github/**/*.yaml
+
+      - uses: harveyr/gh-action-publish@releases/<version>
+        with:
+          dirs: dist/
+        if: contains(github.ref, 'refs/heads/versions/' )

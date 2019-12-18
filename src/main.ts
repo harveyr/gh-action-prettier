@@ -13,7 +13,7 @@ async function postCheckRun(flaggedFiles: string[]): Promise<void> {
       return {
         path,
         startLine: 1,
-        level: 'failure',
+        level:   'failure',
         message: 'Prettier would reformat this file',
       }
     }),
