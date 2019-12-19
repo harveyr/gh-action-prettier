@@ -6,14 +6,12 @@
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
+    "dist": "ncc build src/main.ts -o dist",
     "test": "jest"
   },
   "dependencies": {
-    "@actions/core": "^1.0.0",
-    "@actions/exec": "^1.0.1",
-    "@actions/github": "^1.1.0",
-    "@harveyr/github-actions-kit": "^1.0.0",
-    "@octokit/graphql": "^4.3.1"
+    "@actions/core": "^1.2.0",
+    "@harveyr/github-actions-kit": "0.0.3"
   },
   "devDependencies": {
     "@types/eslint": "^6.1.3",
@@ -21,7 +19,8 @@
     "@types/node": "^12.0.4",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
-    "eslint": "^6.6.0",
+    "@zeit/ncc": "^0.20.5",
+    "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.5.0",
     "jest": "^24.8.0",
     "jest-circus": "^24.7.1",

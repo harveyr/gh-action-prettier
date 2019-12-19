@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import * as kit from '@harveyr/github-actions-kit'
-import * as prettier from './prettier'
+import { PrettierClient } from './prettier'
 
 async function postCheckRun(flaggedFiles: string[]): Promise<void> {
   kit.postCheckRun({
@@ -12,12 +12,8 @@ async function postCheckRun(flaggedFiles: string[]): Promise<void> {
     annotations: flaggedFiles.map(path => {
       return {
         path,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        start_line: 1,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        end_line: 1,
-        // eslint-disable-next-line @typescript-eslint/camelcase
-        annotation_level: 'failure',
+        startLine: 1,
+        level: 'failure',
         message: 'Prettier would reformat this file',
       }
     }),
@@ -25,7 +21,10 @@ async function postCheckRun(flaggedFiles: string[]): Promise<void> {
 }
 
 async function run(): Promise<void> {
-  const cwd = core.getInput('working-directory')
+  const executablePath = core.getInput('prettier_path')
+  const cwd = core.getInput('working_directory')
+  const client = new PrettierClient({ executablePath, cwd })
+
   const patterns = core
     .getInput('patterns')
     .split(' ')
@@ -38,11 +37,11 @@ async function run(): Promise<void> {
 
   // Cause the version to be printed to the logs. We want to make sure we're
   // using the version in the repo under test, not the one from this repo.
-  await prettier.getVersion({ cwd })
+  await client.getVersion()
 
   let flaggedFiles: string[] = []
   if (patterns.length) {
-    const output = await prettier.run(patterns, { cwd })
+    const output = await client.run(patterns)
     flaggedFiles = output
       .trim()
       .split('\n')

@@ -1,23 +1,30 @@
 import { ExecOptions, execAndCapture } from '@harveyr/github-actions-kit'
 
-const PRETTIER_PATH = 'node_modules/.bin/prettier'
-
-export async function getVersion(opt: ExecOptions = {}): Promise<string> {
-  opt.failOnStdErr = true
-  const { stdout } = await execAndCapture(
-    'node',
-    [PRETTIER_PATH, '--version'],
-    opt,
-  )
-  return stdout
+export interface PrettierClientParam {
+  cwd?: string
+  executablePath: string
 }
 
-export async function run(
-  patterns: string[],
-  opt: ExecOptions = {},
-): Promise<string> {
-  opt.failOnStdErr = false
-  const args = [PRETTIER_PATH, '--list-different'].concat(patterns)
-  const { stdout, stderr } = await execAndCapture('node', args, opt)
-  return stdout + stderr
+export class PrettierClient {
+  constructor(public readonly param: PrettierClientParam) {}
+
+  async runPrettier(args: string[], opt: ExecOptions = {}): Promise<string> {
+    if (this.param.cwd) {
+      opt.cwd = this.param.cwd
+    }
+    args = [this.param.executablePath].concat(args)
+
+    const result = await execAndCapture('node', args, opt)
+    return result.stdout + result.stderr
+  }
+
+  async getVersion(): Promise<string> {
+    return this.runPrettier(['--version'], { failOnStdErr: true })
+  }
+
+  async run(patterns: string[]): Promise<string> {
+    return this.runPrettier(['--list-different'].concat(patterns), {
+      failOnStdErr: false,
+    })
+  }
 }
