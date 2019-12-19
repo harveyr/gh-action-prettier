@@ -4,7 +4,7 @@ import { PrettierClient } from './prettier'
 
 async function postCheckRun(flaggedFiles: string[]): Promise<void> {
   await kit.postCheckRun({
-    githubToken: core.getInput('github-token'),
+    githubToken: core.getInput('github_token'),
     name: 'Prettier',
     conclusion: flaggedFiles.length === 0 ? 'success' : 'failure',
     summary: flaggedFiles.length ? 'Flagged files' : 'No flagged files',

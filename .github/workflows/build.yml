@@ -21,8 +21,15 @@ jobs:
       - name: run
         uses: ./
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           patterns: src/**.ts .github/**/**.yml .github/**/**.yaml
+
+      - name: run with npx
+        uses: ./
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          patterns: src/**.ts .github/**/**.yml .github/**/**.yaml
+          npx: 'true'
 
       - uses: harveyr/gh-action-publish@releases/v0
         with:
