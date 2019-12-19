@@ -18,7 +18,7 @@ jobs:
 
       - run: npm run dist
 
-      - name: run
+      - name: run with defaults
         uses: ./
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
