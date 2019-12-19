@@ -3,8 +3,8 @@ import * as kit from '@harveyr/github-actions-kit'
 import { PrettierClient } from './prettier'
 
 async function postCheckRun(flaggedFiles: string[]): Promise<void> {
-  kit.postCheckRun({
-    githubToken: core.getInput('github-token'),
+  await kit.postCheckRun({
+    githubToken: core.getInput('github_token'),
     name: 'Prettier',
     conclusion: flaggedFiles.length === 0 ? 'success' : 'failure',
     summary: flaggedFiles.length ? 'Flagged files' : 'No flagged files',
@@ -23,7 +23,8 @@ async function postCheckRun(flaggedFiles: string[]): Promise<void> {
 async function run(): Promise<void> {
   const executablePath = core.getInput('prettier_path')
   const cwd = core.getInput('working_directory')
-  const client = new PrettierClient({ executablePath, cwd })
+  const npx = core.getInput('npx') === 'true'
+  const client = new PrettierClient({ executablePath, npx, cwd })
 
   const patterns = core
     .getInput('patterns')
