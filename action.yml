@@ -7,6 +7,9 @@ inputs:
   prettier_path:
     description: Path to prettier executable
     default: node_modules/.bin/prettier
+  npx:
+    description: Set to 'true' to use npx to run prettier instead of running the executable directly
+    default: 'false'
   patterns:
     description: File patterns to pass to prettier
     required: false

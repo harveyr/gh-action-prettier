@@ -23,7 +23,8 @@ async function postCheckRun(flaggedFiles: string[]): Promise<void> {
 async function run(): Promise<void> {
   const executablePath = core.getInput('prettier_path')
   const cwd = core.getInput('working_directory')
-  const client = new PrettierClient({ executablePath, cwd })
+  const npx = core.getInput('npx') === 'true'
+  const client = new PrettierClient({ executablePath, npx, cwd })
 
   const patterns = core
     .getInput('patterns')
