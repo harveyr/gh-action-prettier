@@ -22,7 +22,7 @@ jobs:
         uses: ./
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          patterns: src/**.ts .github/**/*.yml .github/**/*.yaml
+          patterns: src/**.ts .github/**/**.yml .github/**/**.yaml
 
       - uses: harveyr/gh-action-publish@releases/v0
         with:
