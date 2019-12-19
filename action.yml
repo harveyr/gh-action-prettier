@@ -6,7 +6,7 @@ inputs:
     description: Github token (required to post annotations)
   prettier_path:
     description: Path to prettier executable
-    default: 'node_modules/.bin/prettier'
+    default: node_modules/.bin/prettier
   patterns:
     description: File patterns to pass to prettier
     required: false
