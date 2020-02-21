@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.0",
-    "@harveyr/github-actions-kit": "0.0.3"
+    "@harveyr/github-actions-kit": "0.0.11"
   },
   "devDependencies": {
     "@types/eslint": "^6.1.3",
