@@ -1,3 +1,3 @@
-# gh-action-eslint
+# gh-action-prettier
 
-ESLint Github Action.
+GitHub Action to run prettier and report annotations into the PR.
